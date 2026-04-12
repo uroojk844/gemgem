@@ -38,38 +38,14 @@ yarn dev
 bun run dev
 ```
 
-## Production
+## AI/tools used and for what
 
-Build the application for production:
+Used gemini for mock creating mock data and for function docs
 
-```bash
-# npm
-npm run build
+## What you would do next with more time
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- bug fixes
+- better approach
+- Optimize app performace
+- Better error handling for forms, currently very basic form validation is getting used.
+- More code spliting and lazy loading
