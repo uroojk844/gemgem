@@ -3,24 +3,25 @@ import type { IFormStone, IStone } from "~/data/stoneAttributes";
 import { useStoneStore } from "~/store/stone.store";
 import AppButton from "./AppButton.vue";
 
-const props = defineProps<{ data: IStone }>();
-
+const { data } = defineProps<{ data: IStone }>();
 const emit = defineEmits(["cancel"]);
+
 const stoneStore = useStoneStore();
 const { getSelectedStones } = storeToRefs(stoneStore);
 
 const showForm = ref<boolean>(true);
 const isUpdating = ref<boolean>(false);
 
+// generating simple id for each stones later uuid can be used
 const getId = () => new Date().getTime();
 
 const initialValue = () => {
   let id = getId();
   return {
     id,
-    category: props.data.category,
-    stoneType: props.data.stoneType[0],
-    shape: props.data.category === "diamond" ? "round" : "emerald",
+    category: data.category,
+    stoneType: data.stoneType[0],
+    shape: data.category === "diamond" ? "round" : "emerald",
     quantity: "1",
     caret: "1.5",
   } as IFormStone;
@@ -28,6 +29,7 @@ const initialValue = () => {
 
 const formData = ref<IFormStone>({ ...initialValue() });
 
+// function to add new stone if one stone is aleary added
 function handleAddStone() {
   let id = getId();
   formData.value = {
@@ -37,6 +39,7 @@ function handleAddStone() {
   showForm.value = true;
 }
 
+// cancel opened form
 function handleCancel() {
   if (getSelectedData.value.length) {
     showForm.value = false;
@@ -51,15 +54,17 @@ function handleRemove(index: number) {
 }
 
 function handleSubmit(event: SubmitEvent) {
+  // updating selected stone from tile
   if (isUpdating.value) {
     stoneStore.updateStones(formData.value);
     isUpdating.value = false;
   } else {
+    // Adding new gem to stone
     const form = new FormData(event.target as HTMLFormElement);
     const data = Object.fromEntries(form) as unknown as IFormStone;
     stoneStore.addStones({
       ...data,
-      category: props.data.category,
+      category: data.category,
       id: getId(),
     });
   }
@@ -67,15 +72,14 @@ function handleSubmit(event: SubmitEvent) {
 }
 
 const getSelectedData = computed(() =>
-  getSelectedStones.value.filter(
-    (data) => data.category == props.data.category,
-  ),
+  getSelectedStones.value.filter((data) => data.category == data.category),
 );
 
 const getTotalQty = computed(() =>
   getSelectedData.value.reduce((cur, acc) => cur + +acc.quantity, 0),
 );
 
+// select tile to update its value with pre-filled form
 function handleTileSelect(stone: IFormStone) {
   formData.value = {
     ...stone,
