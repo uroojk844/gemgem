@@ -61,9 +61,9 @@ function handleSubmit(event: SubmitEvent) {
   } else {
     // Adding new gem to stone
     const form = new FormData(event.target as HTMLFormElement);
-    const data = Object.fromEntries(form) as unknown as IFormStone;
+    const newStone = Object.fromEntries(form) as unknown as IFormStone;
     stoneStore.addStones({
-      ...data,
+      ...newStone,
       category: data.category,
       id: getId(),
     });
@@ -72,7 +72,7 @@ function handleSubmit(event: SubmitEvent) {
 }
 
 const getSelectedData = computed(() =>
-  getSelectedStones.value.filter((data) => data.category == data.category),
+  getSelectedStones.value.filter((s) => s.category == data.category),
 );
 
 const getTotalQty = computed(() =>
