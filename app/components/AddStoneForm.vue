@@ -31,11 +31,7 @@ const formData = ref<IFormStone>({ ...initialValue() });
 
 // function to add new stone if one stone is aleary added
 function handleAddStone() {
-  let id = getId();
-  formData.value = {
-    ...initialValue(),
-    id,
-  };
+  formData.value = { ...initialValue() };
   showForm.value = true;
 }
 
@@ -43,6 +39,7 @@ function handleAddStone() {
 function handleCancel() {
   if (getSelectedData.value.length) {
     showForm.value = false;
+    isUpdating.value = false;
   } else emit("cancel");
   formData.value = { ...initialValue() };
 }
